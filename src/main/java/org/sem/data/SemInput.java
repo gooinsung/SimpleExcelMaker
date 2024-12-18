@@ -3,12 +3,15 @@ package org.sem.data;
 import java.util.List;
 
 public class SemInput {
-    private SemInput() {
+    private SemInput(SemInputBuilder builder) {
+        this.fileName = builder.fileName;
+        this.sheetName = builder.sheetName;
+        this.dataList = builder.dataList;
     }
 
-    private String fileName;
-    private String sheetName;
-    private List<?> dataList;
+    private final String fileName;
+    private final String sheetName;
+    private final List<?> dataList;
 
     public String getFileName() {
         return this.fileName;
@@ -22,24 +25,31 @@ public class SemInput {
         return this.dataList;
     }
 
-    public static SemInput builder() {
-        return new SemInput();
-    }
 
-    public void fileName(String fileName) {
-        if (this.fileName == null || this.fileName.length() == 0) {
+    public static class SemInputBuilder {
+        private String fileName = "excel.xlsx";
+        private String sheetName = "sheet1";
+        private List<?> dataList;
+
+        public SemInputBuilder fileName(String fileName) {
             this.fileName = fileName;
+            return this;
         }
-    }
 
-    public void dataList(List<?> dataList) {
-        this.dataList = dataList;
-    }
-
-    public void sheetName(String sheetName) {
-        if (this.sheetName == null || this.sheetName.length() == 0) {
+        public SemInputBuilder sheetName(String sheetName) {
             this.sheetName = sheetName;
+            return this;
+        }
+
+        public SemInputBuilder dataList(List<?> dataList) {
+            this.dataList = dataList;
+            return this;
+        }
+
+        public SemInput build() {
+            return new SemInput(this);
         }
     }
+
 
 }
